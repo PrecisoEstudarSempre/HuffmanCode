@@ -1,1 +1,11 @@
 *.class
+HuffmanCode/build.xml
+HuffmanCode/build/classes/_netbeans_automatic_build
+HuffmanCode/build/classes/_netbeans_update_resources
+HuffmanCode/nbproject/build-impl.xml
+HuffmanCode/nbproject/genfiles.properties
+HuffmanCode/nbproject/private/config.properties
+HuffmanCode/nbproject/private/private.properties
+HuffmanCode/nbproject/private/private.xml
+HuffmanCode/nbproject/project.properties
+HuffmanCode/nbproject/project.xml

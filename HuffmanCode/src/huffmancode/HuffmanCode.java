@@ -11,8 +11,8 @@ public class HuffmanCode {
     public static void main(String[] args) {
         HuffmanCode huffmanCode = new HuffmanCode();
         String text = huffmanCode.getText();
-        HuffmanTree huffmanTree = new HuffmanTree(text);
-        huffmanTree.createTree();
+        HuffmanTree huffmanTree = new HuffmanTree();
+        System.out.println(huffmanTree.crypt(text));
     }
 
     private String getText() {

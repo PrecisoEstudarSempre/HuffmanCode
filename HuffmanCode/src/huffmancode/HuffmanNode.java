@@ -7,9 +7,18 @@ package huffmancode;
 public class HuffmanNode {
 
     private Integer frequency;
-    private char content;
+    private int content;
     private HuffmanNode left;
     private HuffmanNode right;
+    private boolean isEmpty;
+
+    public boolean isIsEmpty() {
+        return isEmpty;
+    }
+
+    public void setIsEmpty(boolean isEmpty) {
+        this.isEmpty = isEmpty;
+    }
 
     public Integer getFrequency() {
         return frequency;
@@ -27,11 +36,11 @@ public class HuffmanNode {
         this.frequency = frequency;
     }
 
-    public char getContent() {
+    public int getContent() {
         return content;
     }
 
-    public void setContent(char content) {
+    public void setContent(int content) {
         this.content = content;
     }
 
@@ -41,5 +50,10 @@ public class HuffmanNode {
 
     public void setRight(HuffmanNode right) {
         this.right = right;
+    }
+
+    @Override
+    public String toString() {
+        return "[content="+this.content+"]";
     }
 }

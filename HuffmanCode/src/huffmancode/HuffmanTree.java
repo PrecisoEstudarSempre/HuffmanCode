@@ -17,10 +17,6 @@ public class HuffmanTree {
     private String cryptedText;
     private HuffmanNode root;
 
-    public HuffmanTree(String nonCryptedText) {
-        this.nonCryptedText = nonCryptedText;
-    }
-
     private Map<Character, Integer> getCharFrequency(String nonCryptedText) {
         char[] arrayOfChars = nonCryptedText.toCharArray();
         Map<Character, Integer> frequencyMap = new HashMap<>();
@@ -55,8 +51,8 @@ public class HuffmanTree {
         return roots;
     }
 
-    public void createTree() {
-        List<HuffmanNode> priorityRootList = initializeTree(this.getCharFrequency(this.nonCryptedText));
+    private void createTree() {
+        List<HuffmanNode> priorityRootList = this.initializeTree(this.getCharFrequency(this.nonCryptedText));
 
         while (priorityRootList.size() > 1) {
             HuffmanNode firstNode = priorityRootList.get(0);
@@ -64,7 +60,9 @@ public class HuffmanTree {
             HuffmanNode newRoot = new HuffmanNode();
             newRoot.setLeft(firstNode);
             newRoot.setRight(secondNode);
+            newRoot.setIsEmpty(true);
             newRoot.setFrequency(newRoot.getLeft().getFrequency() + newRoot.getRight().getFrequency());
+            newRoot.setContent(666);
             priorityRootList.add(newRoot);
             priorityRootList.remove(firstNode);
             priorityRootList.remove(secondNode);
@@ -75,14 +73,29 @@ public class HuffmanTree {
 
     public String crypt(String nonCryptedText) {
         this.nonCryptedText = nonCryptedText;
-        return crypt();
+        this.createTree();
+        StringBuilder cryptedTextAccumulator = new StringBuilder();
+        final String SPACE = " ";
+        for (char wantedChar : this.nonCryptedText.toCharArray()) {
+            cryptedTextAccumulator.append(crypt(this.root, wantedChar)).append(SPACE);
+        }
+        return this.cryptedText = cryptedTextAccumulator.toString();
     }
 
-    public String crypt() {
-        String cryptedText = null;
-
-        this.cryptedText = cryptedText;
-        return cryptedText;
+    public String crypt(HuffmanNode root, char wantedChar) {
+        if (root.getLeft().getContent() == wantedChar) {
+            return "0";
+        }
+        if (root.getRight().getContent() == wantedChar) {
+            return "1";
+        }
+        if (root.getLeft().getContent() == 666) {
+            return "0".concat(crypt(root.getLeft(), wantedChar));
+        }
+        if (root.getRight().getContent() == 666) {
+            return "1".concat(crypt(root.getRight(), wantedChar));
+        }
+        return "";
     }
 
     public String decrypt(String cryptedText) {

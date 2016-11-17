@@ -15,7 +15,8 @@ public class HuffmanTree {
 
     private String nonCryptedText;
     private String cryptedText;
-    private HuffmanNode root;
+    private HuffmanNode root; //se comporta como uma cifra
+    private Map<Character, String> binaryMap;
 
     private Map<Character, Integer> getCharFrequency(String nonCryptedText) {
         char[] arrayOfChars = nonCryptedText.toCharArray();
@@ -36,11 +37,19 @@ public class HuffmanTree {
             HuffmanNode node = new HuffmanNode();
             node.setContent(entry.getKey());
             node.setFrequency(entry.getValue());
+            node.setIsLeaf(true);
             roots.add(node);
         }
         return sortRoots(roots);
     }
 
+    private void initializeBinaryMap(Map<Character, Integer> frequencyMap){
+        this.binaryMap = new HashMap<>(frequencyMap.size());
+        for(Map.Entry<Character, Integer> entry : frequencyMap.entrySet()){
+            this.binaryMap.put(entry.getKey(), null);
+        }
+    }
+    
     private List<HuffmanNode> sortRoots(List<HuffmanNode> roots) {
         Collections.sort(roots, new Comparator<HuffmanNode>() {
             @Override
@@ -51,8 +60,10 @@ public class HuffmanTree {
         return roots;
     }
 
-    private void createTree() {
-        List<HuffmanNode> priorityRootList = this.initializeTree(this.getCharFrequency(this.nonCryptedText));
+    private HuffmanNode createTree() {
+        Map<Character, Integer> charFrequencyMap = this.getCharFrequency(this.nonCryptedText);
+        this.initializeBinaryMap(charFrequencyMap);
+        List<HuffmanNode> priorityRootList = this.initializeTree(charFrequencyMap);
 
         while (priorityRootList.size() > 1) {
             HuffmanNode firstNode = priorityRootList.get(0);
@@ -60,7 +71,6 @@ public class HuffmanTree {
             HuffmanNode newRoot = new HuffmanNode();
             newRoot.setLeft(firstNode);
             newRoot.setRight(secondNode);
-            newRoot.setIsEmpty(true);
             newRoot.setFrequency(newRoot.getLeft().getFrequency() + newRoot.getRight().getFrequency());
             newRoot.setContent(666);
             priorityRootList.add(newRoot);
@@ -68,38 +78,41 @@ public class HuffmanTree {
             priorityRootList.remove(secondNode);
             this.sortRoots(priorityRootList);
         }
-        this.root = priorityRootList.get(0);
+        return priorityRootList.get(0);
     }
 
     public String crypt(String nonCryptedText) {
         this.nonCryptedText = nonCryptedText;
-        this.createTree();
-        StringBuilder cryptedTextAccumulator = new StringBuilder();
-        final String SPACE = " ";
-        for (char wantedChar : this.nonCryptedText.toCharArray()) {
-            cryptedTextAccumulator.append(crypt(this.root, wantedChar)).append(SPACE);
+        final String SPACE = "-";
+        StringBuilder accumulatorCryptedText = new StringBuilder();
+        
+        this.root = this.createTree();
+        this.crypt();
+        
+        for(char nonCrypedLetter : this.nonCryptedText.toCharArray()){
+            accumulatorCryptedText.append(binaryMap.get(nonCrypedLetter)).append(SPACE);
         }
-        return this.cryptedText = cryptedTextAccumulator.toString();
+        
+        return accumulatorCryptedText.toString();
     }
 
-    public String crypt(HuffmanNode root, char wantedChar) {
-        if (root.getLeft().getContent() == wantedChar) {
-            return "0";
+    public void crypt() {
+        this.crypt(this.root, "");
+    }
+    
+    public void crypt(HuffmanNode root, String currentBinary) {
+        if(root.isLeaf()){
+            binaryMap.put((char)root.getContent(), currentBinary);
+        } else {
+            crypt(root.getLeft(), currentBinary.concat("0"));
+            crypt(root.getRight(), currentBinary.concat("1"));
         }
-        if (root.getRight().getContent() == wantedChar) {
-            return "1";
-        }
-        if (root.getLeft().getContent() == 666) {
-            return "0".concat(crypt(root.getLeft(), wantedChar));
-        }
-        if (root.getRight().getContent() == 666) {
-            return "1".concat(crypt(root.getRight(), wantedChar));
-        }
-        return "";
     }
 
     public String decrypt(String cryptedText) {
         this.cryptedText = cryptedText;
+        String[] arrayCryptedText = this.cryptedText.split("-");
+        StringBuilder accumulatorDecryptedText = new StringBuilder();
         return decrypt();
     }
 

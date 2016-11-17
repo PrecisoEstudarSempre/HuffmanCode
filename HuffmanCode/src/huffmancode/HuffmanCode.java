@@ -12,7 +12,9 @@ public class HuffmanCode {
         HuffmanCode huffmanCode = new HuffmanCode();
         String text = huffmanCode.getText();
         HuffmanTree huffmanTree = new HuffmanTree();
-        System.out.println(huffmanTree.crypt(text));
+        String cryptedText = huffmanTree.crypt(text);
+        System.out.println("Crypted: " + cryptedText);
+        System.out.println("Decrypted: " + huffmanTree.d);
     }
 
     private String getText() {

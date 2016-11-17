@@ -10,14 +10,14 @@ public class HuffmanNode {
     private int content;
     private HuffmanNode left;
     private HuffmanNode right;
-    private boolean isEmpty;
+    private boolean isLeaf;
 
-    public boolean isIsEmpty() {
-        return isEmpty;
+    public boolean isLeaf() {
+        return isLeaf;
     }
 
-    public void setIsEmpty(boolean isEmpty) {
-        this.isEmpty = isEmpty;
+    public void setIsLeaf(boolean isLeaf) {
+        this.isLeaf = isLeaf;
     }
 
     public Integer getFrequency() {

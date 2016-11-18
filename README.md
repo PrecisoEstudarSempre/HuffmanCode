@@ -6,7 +6,7 @@ Forma de funcionamento:
 			<blockquote>- Alguma string para a compressão.</blockquote>
 		Saídas:
 			<blockquote>
-				- Código binário comprimido.
+				- Código binário comprimido.<br/>
 				- A string descomprimida a partir do código binário.
 			</blockquote>
 	</blockquote>
